@@ -84,7 +84,7 @@ input{
 
 @media (max-width:500px) {
     .clock-pic {
-        margin: 20.8vh 23vw;
+        margin: 20.8vh 19vw;
         width: 300px;
     }
 }
