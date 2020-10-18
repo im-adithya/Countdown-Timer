@@ -82,9 +82,23 @@ input{
     cursor: pointer
 }
 
+.blink {
+    animation: blink 0.5s linear infinite;
+}
+
+.blink>div>.numbers {
+    color:red
+}
+
+@keyframes blink{
+    0%{opacity: 0;}
+    50%{opacity: .5;}
+    100%{opacity: 1;}
+}
+
 @media (max-width:500px) {
     .clock-pic {
-        margin: 20.8vh 19vw;
+        margin: 20.8vh 15vw;
         width: 300px;
     }
 }
