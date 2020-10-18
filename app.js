@@ -9,8 +9,26 @@ const start = document.getElementById('start')
 
 const time = document.getElementById('time')
 
+time.onchange = function () {
+    hours.innerHTML = time.value.split(':')[0];
+    minutes.innerHTML = time.value.split(':')[1];
+    seconds.innerHTML = time.value.split(':')[2];
+}
+
 let pausetog = false
 let deadline = 0
+
+start.onclick = function () {
+    let times = time.value.split(':')
+    deadline = times[0] * 3600000 + times[1] * 60000 + times[2] * 1000
+    if (deadline) {
+        startClock(new Date(Date.parse(new Date()) + deadline))
+    } else {
+        alert("Enter a valid time")
+    }
+}
+
+console.log(clock.classList)
 
 function remainingTime(endtime) {
     const total = Date.parse(endtime) - Date.parse(new Date());
@@ -22,7 +40,11 @@ function remainingTime(endtime) {
 }
 
 function startClock(endtime) {
-
+    if (document.getElementById('clock').classList.length) {
+        document.getElementById('clock').classList.remove('blink')
+    }
+    time.disabled = true
+    start.innerHTML = 'Start Over'
     function updateClock() {
         const t = remainingTime(endtime);
 
@@ -32,6 +54,28 @@ function startClock(endtime) {
 
         if (t.total <= 0) {
             clearInterval(timeinterval);
+            document.getElementById('clock').className += ' blink'
+            console.log(clock.classList.length)
+        }
+
+        start.onclick = function () {
+            if (document.getElementById('clock').classList.length) {
+                document.getElementById('clock').classList.remove('blink')
+            }
+            clearInterval(timeinterval)
+            let times = time.value.split(':')
+            hours.innerHTML = times[0];
+            minutes.innerHTML = times[1];
+            seconds.innerHTML = times[2];
+            deadline = times[0] * 3600000 + times[1] * 60000 + times[2] * 1000
+            if (deadline) {
+                startClock(new Date(Date.parse(new Date()) + deadline))
+            } else {
+                alert("Enter a valid time")
+                hours.innerHTML = '00'
+                minutes.innerHTML = '00'
+                seconds.innerHTML = '00'
+            }
         }
 
         pause.onclick = function () {
@@ -48,6 +92,12 @@ function startClock(endtime) {
         }
 
         reset.onclick = function () {
+            if (document.getElementById('clock').classList.length) {
+                document.getElementById('clock').classList.remove('blink')
+            }
+            time.disabled = false
+            time.value = '--:--:--'
+            start.innerHTML = 'Start'
             hours.innerHTML = '00'
             minutes.innerHTML = '00'
             seconds.innerHTML = '00'
@@ -58,14 +108,4 @@ function startClock(endtime) {
     updateClock();
     const timeinterval = setInterval(updateClock, 1000);
 
-}
-
-start.onclick = function () {
-    let times = time.value.split(':')
-    deadline = times[0] * 3600000 + times[1] * 60000 + times[2] * 1000
-    if (deadline) {
-        startClock(new Date(Date.parse(new Date()) + deadline))
-    } else {
-        alert("Enter a valid time")
-    }
 }
